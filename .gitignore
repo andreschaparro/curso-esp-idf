@@ -1,0 +1,17 @@
+# Project files
+**/build/
+**/sdkconfig
+**/sdkconfig.old
+
+# VS Code Settings
+.vscode/
+.devcontainer/
+
+# ESP-IDF default build directory name
+build
+
+# lock files and components
+dependencies.lock
+
+# managed_components
+managed_components
