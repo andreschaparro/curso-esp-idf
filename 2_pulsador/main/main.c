@@ -62,7 +62,7 @@ void button_init(gpio_num_t gpio_num)
         },
     };
     button_handle_t btn = iot_button_create(&btn_cfg);
-    assert(btn);
+    assert(btn != NULL);
     esp_err_t err = iot_button_register_cb(btn, BUTTON_PRESS_DOWN, button_event_cb, (void *)BUTTON_PRESS_DOWN);
     err |= iot_button_register_cb(btn, BUTTON_PRESS_UP, button_event_cb, (void *)BUTTON_PRESS_UP);
     err |= iot_button_register_cb(btn, BUTTON_PRESS_REPEAT, button_event_cb, (void *)BUTTON_PRESS_REPEAT);

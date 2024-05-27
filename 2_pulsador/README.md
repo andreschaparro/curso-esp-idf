@@ -29,9 +29,9 @@ El segundo sitio es:
 9. Ejecutar `ESP-IDF: Full Clean`.
 10. Ejecutar `ESP-IDF: Build Project`.
 
-## Component espressif/button del framework ESP-IoT-Solution.
+## Component espressif/button del framework ESP-IoT-Solution
 
-[button](https://docs.espressif.com/projects/esp-iot-solution/en/latest/input_device/button.html)
+[Button](https://docs.espressif.com/projects/esp-iot-solution/en/latest/input_device/button.html)
 
 1. Agregarlo.
 2. Dentro de la carpeta `main`, abrir el archivo `idf_component.yml`.
