@@ -1,0 +1,15 @@
+menu "Custom Wi-Fi Configuration"
+
+    config WIFI_SSID
+        string "Wi-Fi SSID"
+        default "myssid"
+        help
+            SSID (network name) for the application to connect to.
+
+    config WIFI_PASSWORD
+        string "Wi-Fi Password"
+        default "mypassword"
+        help
+            WiFi password (WPA or WPA2) for the application to use.
+
+endmenu
