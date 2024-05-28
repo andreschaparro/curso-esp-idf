@@ -14,9 +14,13 @@ Cuyos componentes se podran descargar del:
 
 El segundo sitio es:
 
+[idf-extra-components](https://github.com/espressif/idf-extra-components)
+
+El tercer sitio es:
+
 [UncleRus](https://github.com/UncleRus/esp-idf-lib)
 
-## Agregar un component que esta en el framework ESP-IoT-Solution
+## Agregar un component que esta en el framework ESP-IoT-Solution o en idf-extra-components
 
 1. Abrir la pagina [ESP Component Registry](https://components.espressif.com/).
 2. Buscar el component.

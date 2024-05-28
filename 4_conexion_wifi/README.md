@@ -4,13 +4,13 @@
 
 El driver Wi-Fi puede funcionar de 3 modos diferentes:
 
-- El modo station o sta, que se utiliza cuando queremos conectarnos a una red Wi-Fi.
-- El modo AP, o Soft-AP, o access point; que se utiliza cuando queremos crear una red Wi-Fi para que otros dispositivos se conecten a nosotros.
-- El modo AP/sta, donde coexisten los dos anteriores.
+- En modo station o sta, que se utiliza cuando queremos conectarnos a una red Wi-Fi.
+- En modo AP, o SoftAP, o access point; que se utiliza cuando queremos crear una red Wi-Fi para que otros dispositivos se conecten a nosotros.
+- En modo AP/sta, donde coexisten los dos anteriores.
 
-En los siguientes sitios esta la documantacion y los ejemplos:
+En los siguientes sitios, esta la documantacion y los ejemplos:
 
-[Wi-Fi](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/network/esp_wifi.html)
+[Wi-Fi](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/network/esp_wifi.html)
 
 [Wi-Fi Driver](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/wifi.html)
 
@@ -57,6 +57,6 @@ endmenu
 9. Completar el `Wi-Fi Password`.
 10. Ejecutar `ESP-IDF: Build Project`.
 
-En el siguiente sitio esta la documentacion:
+En el siguiente sitio, esta la documentacion:
 
 [Project Configuration](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/kconfig.html#configuration-options-reference)
