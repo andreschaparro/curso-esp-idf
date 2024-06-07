@@ -65,9 +65,9 @@ En el siguiente sitio, esta la documentacion:
 #!/bin/bash
 
 HOSTNAME="raspberrypi.local"
-SUBJECT_CA="/C=AR/ST=Buenos Aires/L=Pilar/O=FVSA/OU=CA/CN=$HOSTNAME"
-SUBJECT_SERVER="/C=AR/ST=Buenos Aires/L=Pilar/O=FVSA/OU=Server/CN=$HOSTNAME"
-SUBJECT_CLIENT="/C=AR/ST=Buenos Aires/L=Pilar/O=FVSA/OU=Client/CN=$HOSTNAME"
+SUBJECT_CA="/C=AR/ST=AMBA/L=Municipio/O=Empresa/OU=CA/CN=$HOSTNAME"
+SUBJECT_SERVER="/C=AR/ST=AMBA/L=Municipio/O=Empresa/OU=Server/CN=$HOSTNAME"
+SUBJECT_CLIENT="/C=AR/ST=AMBA/L=Municipio/O=Empresa/OU=Client/CN=$HOSTNAME"
 
 function generate_CA () {
     echo "$SUBJECT_CA"
