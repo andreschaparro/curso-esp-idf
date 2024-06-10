@@ -15,3 +15,9 @@ dependencies.lock
 
 # managed_components
 managed_components
+
+# TLS files
+*.crt
+*.key
+*.csr
+*.srl

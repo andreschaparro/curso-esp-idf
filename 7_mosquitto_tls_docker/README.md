@@ -141,7 +141,7 @@ En el siguiente sitio, esta la documentacion:
 
 [Docker Compose Quickstart](https://docs.docker.com/compose/gettingstarted/)
 
-## Prueba del contenedor de Mosquitto con TLS
+## Probar el contenedor de Mosquitto con TLS
 
 1. Abrir una nueva terminal en la Raspberry Pi.
 2. Ejecutar `netstat -nap | grep 8883` para verificar que hay un servicio escuchando en el puerto 8883.

@@ -1,6 +1,6 @@
 # Capitulo 6: Raspberry Pi y Docker
 
-## Hardware
+## Seleccionar el hardware
 
 1. Adquirir uno de los siguientes:
 
