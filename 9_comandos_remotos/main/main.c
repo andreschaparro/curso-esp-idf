@@ -1,16 +1,18 @@
 //=====[Libraries]=============================================================
 
 #include <stdio.h>
+#include <string.h>
 
 #include "esp_log.h"
 #include "nvs_flash.h"
 #include "esp_event.h"
 #include "esp_wifi.h"
 #include "mqtt_client.h"
-#include "esp_random.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+
+#include "led_driver.h"
 
 //=====[Defines]===============================================================
 
@@ -33,6 +35,7 @@ extern const uint8_t client_key_end[] asm("_binary_client_key_end");
 //=====[Declaration and initialization of public global variables]=============
 
 static esp_mqtt_client_handle_t client;
+static led_config_t inbuilt_led;
 
 //=====[Declarations (prototypes) of public functions]=========================
 
@@ -46,20 +49,11 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
 
 void app_main(void)
 {
+    led_driver_init(&inbuilt_led, INBUILT_LED, LED_OFF);
     init_nvs();
     wifi_init_sta();
     mqtt_app_start();
-    uint32_t temp;
-    char buff[10];
-    int msg_id;
-    while (1)
-    {
-        temp = (esp_random() % 9) + 18;
-        snprintf(buff, sizeof(buff), "%" PRIu32, temp);
-        msg_id = esp_mqtt_client_enqueue(client, "/temperature", buff, 0, 1, 0, true);
-        ESP_LOGI(TAG, "Enqueued msg_id=%d", msg_id);
-        vTaskDelay(15000 / portTICK_PERIOD_MS);
-    }
+    vTaskDelete(NULL);
 }
 
 //=====[Implementations of public functions]===================================
@@ -139,16 +133,39 @@ void mqtt_app_start(void)
 void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
 {
     esp_mqtt_event_handle_t event = event_data;
+    esp_mqtt_client_handle_t client = event->client;
+    int msg_id;
     switch ((esp_mqtt_event_id_t)event_id)
     {
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
+        msg_id = esp_mqtt_client_subscribe(client, "/led", 1);
+        ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
         break;
     case MQTT_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
         break;
-    case MQTT_EVENT_PUBLISHED:
-        ESP_LOGI(TAG, "MQTT_EVENT_PUBLISHED, msg_id=%d", event->msg_id);
+    case MQTT_EVENT_SUBSCRIBED:
+        ESP_LOGI(TAG, "MQTT_EVENT_SUBSCRIBED, msg_id=%d", event->msg_id);
+        break;
+    case MQTT_EVENT_UNSUBSCRIBED:
+        ESP_LOGI(TAG, "MQTT_EVENT_UNSUBSCRIBED, msg_id=%d", event->msg_id);
+        break;
+    case MQTT_EVENT_DATA:
+        ESP_LOGI(TAG, "MQTT_EVENT_DATA");
+        ESP_LOGI(TAG, "TOPIC = %.*s", event->topic_len, event->topic);
+        ESP_LOGI(TAG, "DATA = %.*s", event->data_len, event->data);
+        if (strncmp(event->topic, "/led", event->topic_len) == 0)
+        {
+            if (strncmp(event->data, "on", event->data_len) == 0)
+            {
+                led_driver_update(&inbuilt_led, LED_ON);
+            }
+            else if (strncmp(event->data, "off", event->data_len) == 0)
+            {
+                led_driver_update(&inbuilt_led, LED_OFF);
+            }
+        }
         break;
     case MQTT_EVENT_ERROR:
         ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
