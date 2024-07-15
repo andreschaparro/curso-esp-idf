@@ -52,10 +52,9 @@ idf_component_register(
 2. Ejecutar `netstat -nap | grep 8883` para verificar que hay un servicio escuchando en el puerto 8883.
 3. Ejecutar `cd iot-platform`.
 4. Ejecutar `cd mosquitto`.
-5. Ejecutar `cd config`.
-6. Ejecutar `cd certs`.
-7. Ejecutar `mosquitto_pub -h 'raspberrypi.local' -t '/led' -m 'on' -p 8883 --cafile ca.crt --cert client.crt --key client.key` para encender el led.
-8. Ejecutar `mosquitto_pub -h 'raspberrypi.local' -t '/led' -m 'off' -p 8883 --cafile ca.crt --cert client.crt --key client.key` para apagar el led.
+5. Ejecutar `cd certs`.
+6. Ejecutar `mosquitto_pub -h 'raspberrypi.local' -t '/led' -m 'on' -p 8883 --cafile ca.crt --cert client.crt --key client.key` para encender el led.
+7. Ejecutar `mosquitto_pub -h 'raspberrypi.local' -t '/led' -m 'off' -p 8883 --cafile ca.crt --cert client.crt --key client.key` para apagar el led.
 
 ![mosquitto_pub](mosquitto_pub.png)
 

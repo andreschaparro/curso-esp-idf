@@ -80,8 +80,7 @@ En el siguiente sitio, esta la documentacion asociada:
 2. Ejecutar `netstat -nap | grep 8883` para verificar que hay un servicio escuchando en el puerto 8883.
 3. Ejecutar `cd iot-platform`.
 4. Ejecutar `cd mosquitto`.
-5. Ejecutar `cd config`.
-6. Ejecutar `cd certs`.
-7. Ejecutar `mosquitto_sub -h 'raspberrypi.local' -t '/temperature' --cafile ca.crt -p 8883 --cert client.crt --key client.key -v`.
+5. Ejecutar `cd certs`.
+6. Ejecutar `mosquitto_sub -h 'raspberrypi.local' -t '/temperature' --cafile ca.crt -p 8883 --cert client.crt --key client.key -v`.
 
 ![Telemetria](telemetria.png)

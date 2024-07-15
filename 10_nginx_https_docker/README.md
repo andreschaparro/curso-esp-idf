@@ -1,6 +1,6 @@
-# Capitulo 10: Ngnix Https y Docker
+# Capitulo 10: Ngnix con Https y Docker
 
-## Crear el archivo nginx.conf para Nginx con HTTPS
+## Crear el archivo nginx.conf de un webserver estatico con HTTPS utilizando Ngnix
 
 1. Ejecutar `cd iot-platform`.
 2. Ejecutar `mkdir nginx`.
@@ -52,13 +52,14 @@ http {
     #}
 
     # HTTPS server
-    
     server {
         listen       8443 ssl;
         server_name  raspberry.local;
 
         ssl_certificate      /etc/nginx/certs/server.crt;
         ssl_certificate_key  /etc/nginx/certs/server.key;
+        ssl_client_certificate  /etc/nginx/certs/ca.crt;
+        ssl_verify_client on;
 
         ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
         ssl_ciphers         HIGH:!aNULL:!MD5;
@@ -78,25 +79,131 @@ En los siguientes sitios, esta la documentacion:
 
 [Configuring HTTPS servers](http://nginx.org/en/docs/http/configuring_https_servers.html)
 
-## Copiar los certificados y llaves para Nginx con HTTPS
-
-1. Ejecutar `mkdir certs`.
-2. Ejecutar `cd certs`.
-3. Ejecutar `cp ../../../mosquitto/config/certs/server.crt ./`.
-4. Ejecutar `cp ../../../mosquitto/config/certs/server.key ./`
-
-## Crear el archivo Dockerfile para generar la imagen de Nginx con HTTPS
+## Reutilizar los certificados y llaves TLS para HTTPS
 
 1. Ejecutar `cd ..`.
 2. Ejecutar `cd ..`.
+3. Ejecutar `cd certs`.
+4. Modificar el contenido de `crearTLS.sh`:
+
+```
+#!/bin/bash
+
+HOSTNAME="raspberrypi.local"
+SUBJECT_CA="/C=AR/ST=AMBA/L=Municipio/O=Empresa/OU=CA/CN=$HOSTNAME"
+SUBJECT_SERVER="/C=AR/ST=AMBA/L=Municipio/O=Empresa/OU=Server/CN=$HOSTNAME"
+SUBJECT_CLIENT="/C=AR/ST=AMBA/L=Municipio/O=Empresa/OU=Client/CN=$HOSTNAME"
+
+function generate_CA () {
+    echo "$SUBJECT_CA"
+    openssl req -x509 -nodes -sha256 -newkey rsa:2048 -subj "$SUBJECT_CA"  -days 825 -keyout ca.key -out ca.crt
+    openssl x509 -in ca.crt -text -noout
+}
+
+function generate_server () {
+    echo "$SUBJECT_SERVER"
+    openssl req -nodes -sha256 -new -subj "$SUBJECT_SERVER" -keyout server.key -out server.csr
+    openssl x509 -req -sha256 -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 825
+    openssl x509 -in server.crt -text -noout
+    openssl verify -CAfile ca.crt server.crt
+}
+
+function generate_client () {
+    echo "$SUBJECT_CLIENT"
+    openssl req -new -nodes -sha256 -subj "$SUBJECT_CLIENT" -out client.csr -keyout client.key
+    openssl x509 -req -sha256 -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 825
+    openssl x509 -in client.crt -text -noout
+    openssl verify -CAfile ca.crt client.crt
+}
+
+function copy_to_mosquitto() {
+    mkdir ../mosquitto/certs
+    cp server.crt ../mosquitto/certs
+    cp server.key ../mosquitto/certs
+    cp ca.crt ../mosquitto/certs
+}
+
+function copy_to_nginx() {
+    mkdir ../nginx/certs
+    cp server.crt ../nginx/certs
+    cp server.key ../nginx/certs
+    cp ca.crt ../nginx/certs
+}
+
+# generate_CA
+# generate_server
+# generate_client
+# copy_to_mosquitto
+copy_to_nginx
+```
+
+5. Ejecutar `./crearTLS.sh`.
+6. Modificar el contenido de `crearTLS.sh`:
+
+```
+#!/bin/bash
+
+HOSTNAME="raspberrypi.local"
+SUBJECT_CA="/C=AR/ST=AMBA/L=Municipio/O=Empresa/OU=CA/CN=$HOSTNAME"
+SUBJECT_SERVER="/C=AR/ST=AMBA/L=Municipio/O=Empresa/OU=Server/CN=$HOSTNAME"
+SUBJECT_CLIENT="/C=AR/ST=AMBA/L=Municipio/O=Empresa/OU=Client/CN=$HOSTNAME"
+
+function generate_CA () {
+    echo "$SUBJECT_CA"
+    openssl req -x509 -nodes -sha256 -newkey rsa:2048 -subj "$SUBJECT_CA"  -days 825 -keyout ca.key -out ca.crt
+    openssl x509 -in ca.crt -text -noout
+}
+
+function generate_server () {
+    echo "$SUBJECT_SERVER"
+    openssl req -nodes -sha256 -new -subj "$SUBJECT_SERVER" -keyout server.key -out server.csr
+    openssl x509 -req -sha256 -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 825
+    openssl x509 -in server.crt -text -noout
+    openssl verify -CAfile ca.crt server.crt
+}
+
+function generate_client () {
+    echo "$SUBJECT_CLIENT"
+    openssl req -new -nodes -sha256 -subj "$SUBJECT_CLIENT" -out client.csr -keyout client.key
+    openssl x509 -req -sha256 -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 825
+    openssl x509 -in client.crt -text -noout
+    openssl verify -CAfile ca.crt client.crt
+}
+
+function copy_to_mosquitto() {
+    mkdir ../mosquitto/certs
+    cp server.crt ../mosquitto/certs
+    cp server.key ../mosquitto/certs
+    cp ca.crt ../mosquitto/certs
+}
+
+function copy_to_nginx() {
+    mkdir ../nginx/certs
+    cp server.crt ../nginx/certs
+    cp server.key ../nginx/certs
+    cp ca.crt ../nginx/certs
+}
+
+generate_CA
+generate_server
+generate_client
+copy_to_mosquitto
+copy_to_nginx
+```
+
+## Crear el archivo Dockerfile para generar la imagen de un webserver estatico con HTTPS utilizando Ngnix
+
+1. Ejecutar `cd ..`.
+2. Ejecutar `cd nginx`.
 3. Ejecutar `touch Dockerfile`.
 4. Modificar el contenido de `Dockerfile`:
 
 ```
 FROM nginx:latest
-COPY ./config/certs/server.crt /etc/nginx/certs/server.crt
-COPY ./config/certs/server.key /etc/nginx/certs/server.key
 COPY ./config/nginx.conf /etc/nginx/nginx.conf
+COPY ./certs/server.crt /etc/nginx/certs/server.crt
+COPY ./certs/server.key /etc/nginx/certs/server.key
+COPY ./certs/ca.crt /etc/nginx/certs/ca.crt
 COPY ./updates /usr/share/nginx/html/updates
 EXPOSE 8443
 ```
@@ -105,10 +212,10 @@ En el siguiente sitio, esta la documentacion:
 
 [Dockerfile reference](https://docs.docker.com/reference/dockerfile/)
 
-## Crear el contenido estatico para Nginx con HTTPS
+## Subir un archivo al webserver estatico con HTTPS utilizando Ngnix
 
 1. Ejecutar `mkdir updates`.
-2. Copiar el archivo `1_hola_mundo.bin` del capitulo 1 a la carpeta `updates`.
+2. Copiar el archivo `1_hola_mundo.bin` que esta dentro la carpeta `build` del proyecto `1_hola_muindo` a la carpeta `updates`.
 
 ## Modificar el archivo compose.yaml para generar el contenedor de Nginx con HTTPS
 
@@ -124,7 +231,7 @@ services:
       - "8883"
     ports:
       - "8883:8883"
-  
+
   nginx:
     build: nginx
     container_name: nginx
@@ -140,17 +247,8 @@ En el siguiente sitio, esta la documentacion:
 
 [Docker Compose Quickstart](https://docs.docker.com/compose/gettingstarted/)
 
-## Probar el contenedor de Nginx con HTTPS
+## Probar el webserver estatico con HTTPS utilizando Ngnix
 
 1. Abrir en el navegador la ruta `https://raspberrypi.local:8443/updates/1_hola_mundo.bin`.
 
 ![Error](error.png)
-
-2. Clic en `Avanzado`.
-3. Clic en `Continuar a raspberrypi.local (no seguro)`.
-
-![Descarga](descarga.png)
-
-4. Clic en `NET:ERR_CERT_AUTHORITY_INVALID`.
-
-![Certificado del Servidor](certificado_servidor.png)

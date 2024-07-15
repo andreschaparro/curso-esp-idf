@@ -78,7 +78,7 @@ factory,app,factory,,2M,,
 
 ```
 
-10. Ejecutar ESP-IDF: `Build Project`.
+10. Ejecutar `ESP-IDF: Build Project`.
 
 En los siguientes sitios, esta la documentacion:
 
