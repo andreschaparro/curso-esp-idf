@@ -17,7 +17,7 @@ En este capitulo:
 - El SOC esperara a la llegada del mismo para iniciar el mecanismo OTA.
 - El SOC hara el mecanismo OTA y descargara el programa `1_hola_mundo.bin` del web server estatico con protocolo HTTPS.
 
-En los siguientes sitios, esta la documentacion asociada:
+En los siguientes sitios, esta la documentacion:
 
 [ESP HTTPS OTA](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/esp_https_ota.html)
 
@@ -53,7 +53,7 @@ ota_1,app,ota_1,,1600K,,
 
 ```
 
-10. Ejecutar ESP-IDF: `Build Project`.
+10. Ejecutar `ESP-IDF: Build Project`.
 
 En los siguientes sitios, esta la documentacion:
 

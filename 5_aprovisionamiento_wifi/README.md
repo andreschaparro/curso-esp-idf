@@ -80,7 +80,7 @@ factory,app,factory,,2M,,
 
 10. Ejecutar `ESP-IDF: Build Project`.
 
-En los siguientes sitios, esta la documentacion:
+En el siguiente sitio, esta la documentacion:
 
 [Partition Tables](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/partition-tables.html)
 

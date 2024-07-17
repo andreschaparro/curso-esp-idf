@@ -56,7 +56,6 @@ void app_main(void)
 {
     init_nvs();
     wifi_init_sta();
-    esp_wifi_set_ps(WIFI_PS_NONE);
     s_ota_event_group = xEventGroupCreate();
     configASSERT(s_ota_event_group != NULL);
     BaseType_t ret;
@@ -67,7 +66,7 @@ void app_main(void)
         NULL,
         (tskIDLE_PRIORITY + 5U),
         NULL,
-        APP_CPU_NUM);
+        PRO_CPU_NUM);
     configASSERT(ret == pdPASS);
     mqtt_app_start();
     vTaskDelete(NULL);

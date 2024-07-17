@@ -7,7 +7,7 @@ En este capitulo:
 - El mosquitto_pub hara de cliente MQTT para publicarle mensajes a Mosquitto.
 - El SOC esperara a la llegada de los mismos para encender o apagar un led.
 
-En los siguientes sitios, esta la documentacion asociada:
+En los siguientes sitios, esta la documentacion:
 
 [ESP-MQTT](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/mqtt.html)
 
@@ -42,7 +42,9 @@ idf_component_register(
 )
 ```
 
-6. Ejecutar ESP-IDF: `Build Project`.
+6. Ejecutar `ESP-IDF: Build Project`.
+
+En el siguiente sitio, esta la documentacion:
 
 [Build System](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/build-system.html)
 

@@ -36,7 +36,7 @@ En este capitulo:
 - El SOC hara de cliente MQTT para publicarle mensajes a Mosquitto.
 - El mosquitto_sub esperara a la llegada de los mismos para mostrarlos por la terminal de la Raspberry Pi.
 
-En los siguientes sitios, esta la documentacion asociada:
+En los siguientes sitios, esta la documentacion:
 
 [ESP-MQTT](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/protocols/mqtt.html)
 
@@ -46,7 +46,7 @@ En los siguientes sitios, esta la documentacion asociada:
 
 [Eclipse Mosquitto an open source MQTT broker](https://mosquitto.org/)
 
-## Agregar el ca.crt, client.crt, y client.key en el firmware
+## Agregar el ca.crt, client.crt, y client.key a la aplicacion
 
 1. Crear un carpeta llamada `certs` dentro de la carpeta `main`.
 2. Copiar el archivo `ca.crt` de la Raspberry Pi a la carpeta `certs`.
@@ -70,7 +70,7 @@ target_add_binary_data(${CMAKE_PROJECT_NAME}.elf "main/certs/client.crt" TEXT)
 target_add_binary_data(${CMAKE_PROJECT_NAME}.elf "main/certs/client.key" TEXT)
 ```
 
-En el siguiente sitio, esta la documentacion asociada:
+En el siguiente sitio, esta la documentacion:
 
 [Build System](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/build-system.html)
 

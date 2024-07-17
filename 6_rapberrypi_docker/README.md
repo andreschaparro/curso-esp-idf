@@ -12,7 +12,7 @@
 
 - [Power supply](https://www.raspberrypi.com/documentation/computers/getting-started.html#power-supply)
 
-3. Adquirir una fuente tarjeta microSD:
+3. Adquirir una tarjeta microSD:
 
 - [Boot Media](https://www.raspberrypi.com/documentation/computers/getting-started.html#boot-media)
 
